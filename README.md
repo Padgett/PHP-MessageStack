@@ -19,6 +19,8 @@ If you wish to make this stateful you'll need to store it somewhere.
 The session is probably the easiest, although YMMV  
 If you'd like to use a database backend, extend the class and create/override the necessary methods  
   
-Examples:  
+Examples:
+````PHP
 $_SESSION['messageStack'] = serialize($messageStack);  
 $messageStack = deserialize($_SESSION['messageStack'];  
+````

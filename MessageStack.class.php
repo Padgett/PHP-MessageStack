@@ -36,33 +36,68 @@ class MessageStack {
 	 * Function: getMessages
 	 * Returns nested array of messages
 	 * If level is passed, restricts to just those messages
+	 * If clear is true, removes returned messages from the stack
 	 */
-	public function getMessages($level = null) {
-		
+	public function getMessages($clear = false,$level = null) {
+		if (is_null($level)) {
+			return $this->msgs;
+			if ($clear) $this->msgs = array();
+		} else {
+			for ($i=0;count($this->msgs)<$i;$i++) {
+				if ($this->msgs[$i]->getLevel == $level) {
+					$return[] = $this->msgs[$i];
+					if ($clear) $this->removeOne($i);
+				}
+			}
+			if ($clear) $this->rebase();
+			return $return;
+		}
 	}
 	
 	/*
 	 * Function: pop
-	 * Returns first message array in stack
+	 * Returns first message and removes it from the stack
 	 */
 	public function pop() {
+		$return = $this->msgs[0];
+		$this->removeOne(0);
+		$this->rebase();
 		
+		return $return;
 	}
 	
-	/*
-	 * Function: clear
+	/* Function: clearMessages
 	 * Clears the message stack
+	 * If level is passed, restricts to just hose messages
 	 */
-	public function clear() {
-		
+	public function clearMessages($level = null) {
+		if (is_null($level)) {
+			$this->msgs = array();
+		} else {
+			for ($i=0;count($this->msgs)<$i;$i++) {
+				if ($this->msgs[$i]->getLevel == $level) {
+					$this->removeOne($i);
+				}
+			}
+			$this->rebase();
+		}
 	}
+	
 	
 	/*
 	 * Private Function: removeOne
 	 * Removes message from the stack
 	 */
 	private function removeOne($i) {
-		
+		unset($this->msgs[$i]);
+	}
+	
+	/*
+	 * Private Function: rebase
+	 * Rebases msgs array
+	 */
+	private function rebase() {
+		$this->msgs = array_values($this->msgs);
 	}
 
 }
@@ -91,7 +126,7 @@ class Message {
 	}
 	
 	public function getMsg() {
-		return $this->_msg;
+		return (string)$this->_msg;
 	}
 	
 	public function getLevel() {

@@ -40,18 +40,18 @@ class MessageStack {
 	 */
 	public function getMessages($clear = false,$level = null) {
 		if (is_null($level)) {
-			return $this->msgs;
+			$return = $this->msgs;
 			if ($clear) $this->msgs = array();
 		} else {
-			for ($i=0;count($this->msgs)<$i;$i++) {
-				if ($this->msgs[$i]->getLevel == $level) {
+			for ($i=0;$i<$this->messageCount();$i++) {
+				if ($this->msgs[$i]->getLevel() == $level) {
 					$return[] = $this->msgs[$i];
 					if ($clear) $this->removeOne($i);
 				}
 			}
 			if ($clear) $this->rebase();
-			return $return;
 		}
+		return $return;
 	}
 	
 	/*
@@ -68,13 +68,13 @@ class MessageStack {
 	
 	/* Function: clearMessages
 	 * Clears the message stack
-	 * If level is passed, restricts to just hose messages
+	 * If level is passed, restricts to just those messages
 	 */
 	public function clearMessages($level = null) {
 		if (is_null($level)) {
 			$this->msgs = array();
 		} else {
-			for ($i=0;count($this->msgs)<$i;$i++) {
+			for ($i=0;$this->messageCount()<$i;$i++) {
 				if ($this->msgs[$i]->getLevel == $level) {
 					$this->removeOne($i);
 				}
@@ -83,10 +83,13 @@ class MessageStack {
 		}
 	}
 	
+	public function messageCount() {
+		return count($this->msgs);
+	}
 	
 	/*
 	 * Private Function: removeOne
-	 * Removes message from the stack
+	 * Removes indexed message from the stack
 	 */
 	private function removeOne($i) {
 		unset($this->msgs[$i]);
@@ -130,7 +133,7 @@ class Message {
 	}
 	
 	public function getLevel() {
-		return $this->_level;
+		return (int)$this->_level;
 	}
 		
 }

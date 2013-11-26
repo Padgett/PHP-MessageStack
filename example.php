@@ -13,9 +13,24 @@ unset($msgs);
 $msgs = unserialize($_SESSION['messageStack']);
 /*** ***/
 
-print_r($msgs->pop());
-print_r($msgs->pop());
-print_r($msgs->pop());
+//print_r($msgs->pop());
+//print_r($msgs->pop());
+//print_r($msgs->pop());
+
+//echo $msgs->pop()->getMsg();
+
+//$messages = $msgs->getMessages(true);
+//print $msgs->messageCount();
+
+print $msgs->messageCount()."\n";
+
+print_r($msgs->getMessages(true, Message::INFO));
+
+print $msgs->messageCount()."\n";
+
+print_r($msgs->getMessages(true));
+
+print $msgs->messageCount()."\n";
 
 session_destroy();
 exit;
